@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: petclinic-test
+namespace: petclinic-prod
 
 resources:
   - ../../base/database
@@ -10,7 +10,7 @@ resources:
 images:
   - name: petclinic
     newName: quay.io/pittar/petclinic
-    newTag: test
+    newTag: prod
 
 patches:
   - target:
