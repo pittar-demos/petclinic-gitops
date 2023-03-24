@@ -6,3 +6,15 @@ resources:
   - git-secret-pipeline.yaml
   - workspace-pvc.yaml
   - maven-secret.yaml
+
+# Generator options.
+generatorOptions:
+  labels:
+    app: maven-settings
+  disableNameSuffixHash: true
+
+# Create a ConfigMap from custom settings.xml file.
+configMapGenerator:
+  - name: maven-settings-cm
+    files:
+      - settings.xml
