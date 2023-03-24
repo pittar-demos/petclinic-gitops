@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - quay-secret-pipeline.yaml
   - git-secret-pipeline.yaml
+  - workspace-pvc.yaml
