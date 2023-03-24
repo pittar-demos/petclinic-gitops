@@ -5,7 +5,7 @@ namespace: petclinic-prod
 
 resources:
   - ../../base/database
-  - ../../base/petclinic
+  - ../../base/app
 
 images:
   - name: petclinic

@@ -5,5 +5,3 @@ namespace: petclinic-cicd
 
 resources:
   - ../../base/cicd
-  - quay-secret-pipeline.yaml
-  - git-secret-pipeline.yaml
