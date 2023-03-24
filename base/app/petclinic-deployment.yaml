@@ -54,14 +54,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-  test: false
-  triggers:
-  - imageChangeParams:
-      containerNames:
-      - petclinic
-      from:
-        kind: ImageStreamTag
-        name: petclinic:latest
-        namespace: cicd
-    type: ImageChange
-  - type: ConfigChange
