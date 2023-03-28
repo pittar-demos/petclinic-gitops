@@ -5,6 +5,7 @@ resources:
   - quay-secret-pipeline.yaml
   - git-secret-pipeline.yaml
   - workspace-pvc.yaml
+  - m2-cache-pvc.yaml
   - maven-secret.yaml
 
 # Generator options.
