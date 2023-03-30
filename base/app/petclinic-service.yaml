@@ -20,7 +20,6 @@ spec:
     targetPort: 8778
   selector:
     app: petclinic
-    deploymentconfig: petclinic
   sessionAffinity: None
   type: ClusterIP
 status:
