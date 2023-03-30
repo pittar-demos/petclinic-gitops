@@ -110,6 +110,24 @@ spec:
       workspaces:
         - name: source
           workspace: workspace
+    - name: skopeo-copy-dev
+      runAfter:
+        - buildah
+      taskRef:
+        kind: ClusterTask
+        name: skopeo-copy
+      params:
+        - name: srcImageURL
+          value: 'docker://quay.io/pittar/petclinic:latest'
+        - name: destImageURL
+          value: 'docker://quay.io/pittar/petclinic:dev'
+        - name: srcTLSverify
+          value: 'true'
+        - name: destTLSverify
+          value: 'true'
+      workspaces:
+        - name: images-url
+          workspace: workspace
     - name: openshift-client
       params:
         - name: SCRIPT
@@ -117,7 +135,7 @@ spec:
         - name: VERSION
           value: latest
       runAfter:
-        - buildah
+        - skopeo-copy-dev
       taskRef:
         kind: ClusterTask
         name: openshift-client
