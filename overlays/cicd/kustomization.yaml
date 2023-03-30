@@ -5,3 +5,4 @@ namespace: petclinic-cicd
 
 resources:
   - ../../base/cicd
+  - build-and-rollout.yaml

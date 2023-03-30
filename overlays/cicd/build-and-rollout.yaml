@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-deploy
+  name: build-and-rollout-dev
 spec:
   tasks:
     - name: git-clone
@@ -10,25 +10,77 @@ spec:
           value: 'https://github.com/pittar/spring-petclinic.git'
         - name: revision
           value: devsecops
+        - name: refspec
+          value: ''
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ''
+        - name: sparseCheckoutDirectories
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+        - name: httpProxy
+          value: ''
+        - name: httpsProxy
+          value: ''
+        - name: noProxy
+          value: ''
+        - name: verbose
+          value: 'true'
+        - name: userHome
+          value: /tekton/home
       taskRef:
         kind: ClusterTask
         name: git-clone
       workspaces:
         - name: output
           workspace: workspace
-    - name: maven
+    - name: mvn
       params:
+        - name: MAVEN_IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/openshift/java:latest
         - name: GOALS
           value:
+            - clean
             - package
             - '-DskipTests'
+        - name: MAVEN_MIRROR_URL
+          value: ''
+        - name: MAVEN_REPO_CONFIG_SECRET
+          value: maven-secret
+        - name: M2_DIRECTORY
+          value: /home/jboss/.m2/
+        - name: SERVER_USER
+          value: ''
+        - name: SERVER_PASSWORD
+          value: ''
+        - name: PROXY_USER
+          value: ''
+        - name: PROXY_PASSWORD
+          value: ''
+        - name: PROXY_PORT
+          value: ''
+        - name: PROXY_HOST
+          value: ''
+        - name: PROXY_NON_PROXY_HOSTS
+          value: ''
+        - name: PROXY_PROTOCOL
+          value: http
         - name: CONTEXT_DIR
           value: .
       runAfter:
         - git-clone
       taskRef:
         kind: ClusterTask
-        name: maven
+        name: mvn
       workspaces:
         - name: source
           workspace: workspace
@@ -44,14 +96,31 @@ spec:
           value: ./Containerfile
         - name: CONTEXT
           value: .
+        - name: TLSVERIFY
+          value: 'true'
+        - name: FORMAT
+          value: oci
+        - name: SKIP_PUSH
+          value: 'false'
       runAfter:
-        - maven
+        - mvn
       taskRef:
         kind: ClusterTask
         name: buildah
       workspaces:
         - name: source
           workspace: workspace
+    - name: openshift-client
+      params:
+        - name: SCRIPT
+          value: oc rollout restart deployment petclinic -n petclinic-dev
+        - name: VERSION
+          value: latest
+      runAfter:
+        - buildah
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
   workspaces:
     - name: workspace
     - name: maven-settings
