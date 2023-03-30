@@ -9,7 +9,7 @@ spec:
     protocol: TCP
     targetPort: 3306
   selector:
-    name: petclinicdb
+    app: petclinicdb
   sessionAffinity: None
   type: ClusterIP
 status:
