@@ -128,7 +128,7 @@ spec:
       workspaces:
         - name: images-url
           workspace: workspace
-    - name: openshift-client
+    - name: rollout-dev
       params:
         - name: SCRIPT
           value: oc rollout restart deployment petclinic -n petclinic-dev
@@ -136,6 +136,35 @@ spec:
           value: latest
       runAfter:
         - skopeo-copy-dev
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+    - name: skopeo-copy-test
+      runAfter:
+        - rollout-dev
+      taskRef:
+        kind: ClusterTask
+        name: skopeo-copy
+      params:
+        - name: srcImageURL
+          value: 'docker://quay.io/pittar/petclinic:latest'
+        - name: destImageURL
+          value: 'docker://quay.io/pittar/petclinic:dev'
+        - name: srcTLSverify
+          value: 'true'
+        - name: destTLSverify
+          value: 'true'
+      workspaces:
+        - name: images-url
+          workspace: workspace
+    - name: openshift-client
+      params:
+        - name: SCRIPT
+          value: oc rollout restart deployment petclinic -n petclinic-test
+        - name: VERSION
+          value: latest
+      runAfter:
+        - skopeo-copy-test
       taskRef:
         kind: ClusterTask
         name: openshift-client
