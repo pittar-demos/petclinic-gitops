@@ -86,7 +86,7 @@ spec:
           workspace: workspace
         - name: maven-settings
           workspace: maven-settings
-    - name: buildah
+    - name: build-image
       params:
         - name: IMAGE
           value: 'quay.io/pittar/petclinic:latest'
@@ -112,13 +112,13 @@ spec:
           workspace: workspace
     - name: skopeo-copy-dev
       runAfter:
-        - buildah
+        - build-image
       taskRef:
         kind: ClusterTask
         name: skopeo-copy
       params:
         - name: srcImageURL
-          value: 'docker://quay.io/pittar/petclinic:latest'
+          value: 'docker://quay.io/pittar/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)'
         - name: destImageURL
           value: 'docker://quay.io/pittar/petclinic:dev'
         - name: srcTLSverify
@@ -147,7 +147,7 @@ spec:
         name: skopeo-copy
       params:
         - name: srcImageURL
-          value: 'docker://quay.io/pittar/petclinic:latest'
+          value: 'docker://quay.io/pittar/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)'
         - name: destImageURL
           value: 'docker://quay.io/pittar/petclinic:test'
         - name: srcTLSverify
