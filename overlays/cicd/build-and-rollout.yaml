@@ -3,6 +3,11 @@ kind: Pipeline
 metadata:
   name: build-and-rollout-dev
 spec:
+  params:
+    - description: Quay username.
+      name: quayuser
+      type: string
+      default: pittar
   tasks:
     - name: git-clone
       params:
@@ -89,7 +94,7 @@ spec:
     - name: build-image
       params:
         - name: IMAGE
-          value: 'quay.io/pittar/petclinic:latest'
+          value: 'quay.io/$(params.quayuser)/petclinic:latest'
         - name: STORAGE_DRIVER
           value: vfs
         - name: DOCKERFILE
@@ -118,9 +123,9 @@ spec:
         name: skopeo-copy
       params:
         - name: srcImageURL
-          value: 'docker://quay.io/pittar/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)'
+          value: 'docker://quay.io/$(params.quayuser)/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)'
         - name: destImageURL
-          value: 'docker://quay.io/pittar/petclinic:dev'
+          value: 'docker://quay.io/$(params.quayuser)/petclinic:dev'
         - name: srcTLSverify
           value: 'true'
         - name: destTLSverify
@@ -147,9 +152,9 @@ spec:
         name: skopeo-copy
       params:
         - name: srcImageURL
-          value: 'docker://quay.io/pittar/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)'
+          value: 'docker://quay.io/$(params.quayuser)/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)'
         - name: destImageURL
-          value: 'docker://quay.io/pittar/petclinic:test'
+          value: 'docker://quay.io/$(params.quayuser)/petclinic:test'
         - name: srcTLSverify
           value: 'true'
         - name: destTLSverify
