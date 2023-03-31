@@ -149,7 +149,7 @@ spec:
         - name: srcImageURL
           value: 'docker://quay.io/pittar/petclinic:latest'
         - name: destImageURL
-          value: 'docker://quay.io/pittar/petclinic:dev'
+          value: 'docker://quay.io/pittar/petclinic:test'
         - name: srcTLSverify
           value: 'true'
         - name: destTLSverify
