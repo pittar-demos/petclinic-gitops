@@ -115,9 +115,29 @@ spec:
       workspaces:
         - name: source
           workspace: workspace
-    - name: skopeo-copy-dev
+    - name: acs-scan-image
+      taskRef:
+        name: rox-image-scan
+        kind: ClusterTask
       runAfter:
         - build-image
+      params:
+        - name: output_format
+          value: table
+        - name: image
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+    - name: acs-check-image
+      taskRef:
+        name: rox-image-check
+        kind: ClusterTask
+      runAfter:
+        - acs-scan-image
+      params:
+        - name: image
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+    - name: skopeo-copy-dev
+      runAfter:
+        - acs-check-image
       taskRef:
         kind: ClusterTask
         name: skopeo-copy
