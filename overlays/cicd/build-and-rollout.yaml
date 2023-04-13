@@ -117,7 +117,7 @@ spec:
           workspace: workspace
     - name: acs-scan-image
       taskRef:
-        name: rox-image-scan
+        name: acs-image-scan
         kind: ClusterTask
       runAfter:
         - build-image
@@ -131,7 +131,7 @@ spec:
           workspace: acs-central
     - name: acs-check-image
       taskRef:
-        name: rox-image-check
+        name: acs-image-check
         kind: ClusterTask
       runAfter:
         - acs-scan-image
