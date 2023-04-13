@@ -126,6 +126,9 @@ spec:
           value: table
         - name: image
           value: quay.io/$(params.quayuser)/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
     - name: acs-check-image
       taskRef:
         name: rox-image-check
@@ -135,6 +138,9 @@ spec:
       params:
         - name: image
           value: quay.io/$(params.quayuser)/petclinic@$(tasks.build-image.results.IMAGE_DIGEST)
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
     - name: skopeo-copy-dev
       runAfter:
         - acs-check-image
@@ -196,3 +202,4 @@ spec:
   workspaces:
     - name: workspace
     - name: maven-settings
+    - name: acs-central
