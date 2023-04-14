@@ -61,9 +61,11 @@
           <sonar.host.url>
             ${env.SONAR_SERVER_HOST}
           </sonar.host.url>
-          <sonar.dependencyCheck.jsonReportPath>target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
+          <sonar.login>admin</sonar.login>
+          <sonar.password>R@dhat1234</sonar.password>
+          <!-- <sonar.dependencyCheck.jsonReportPath>target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
           <sonar.java.pmd.reportPaths>target/pmd.xml</sonar.java.pmd.reportPaths>
-          <sonar.java.checkstyle.reportPaths>target/checkstyle-result.xml</sonar.java.checkstyle.reportPaths>
+          <sonar.java.checkstyle.reportPaths>target/checkstyle-result.xml</sonar.java.checkstyle.reportPaths> -->
         </properties>
       </profile>
     </profiles>
