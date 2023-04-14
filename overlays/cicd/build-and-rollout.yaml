@@ -57,7 +57,7 @@ spec:
             - clean
             - package
             - deploy
-            - '-DskipTests'
+            - sonar:sonar
         - name: MAVEN_MIRROR_URL
           value: ''
         - name: MAVEN_REPO_CONFIG_SECRET
