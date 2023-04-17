@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  labels:
+    storage-tier: gp3
   name: petclinicdb
 spec:
   accessModes:
