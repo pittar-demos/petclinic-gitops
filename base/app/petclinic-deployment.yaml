@@ -19,7 +19,7 @@ spec:
     matchLabels:
       app: petclinic
   strategy:
-    rollingParams:
+    rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
